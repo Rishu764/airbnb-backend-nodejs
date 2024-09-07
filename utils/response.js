@@ -14,5 +14,4 @@ const errorResponse = (res, error, message = "Error", statusCode = 500) => {
   });
 };
 
-
 export { successResponse, errorResponse };

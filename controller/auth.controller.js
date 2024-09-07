@@ -4,9 +4,11 @@ import generateToken from "../utils/jwtConfig.js";
 import { successResponse, errorResponse } from "../utils/response.js";
 
 const signUp = asyncErrorHandler(async (req, res) => {
+  console.log("sdfsdfsf")
   const { name, dateOfBirth, email, password } = req.body;
-  console.log(req.body);
+  console.log(req.file);
   const profilePicture = req.file ? req.file.path : "";
+  console.log(profilePicture)
 
   if (!(name || dateOfBirth || email || password)) {
     return errorResponse(res, null, "All Fields required", 400);
@@ -28,7 +30,7 @@ const signUp = asyncErrorHandler(async (req, res) => {
   if (!newUser) {
     return errorResponse(res, null, "Failed to create user", 500);
   }
-
+  console.log(newUser)
   const token = generateToken(newUser._id);
   res.cookie("jwt", token, {
     httpOnly: true,
@@ -58,4 +60,10 @@ const login = asyncErrorHandler(async (req, res) => {
   return successResponse(res, token, "Login successfully", 201);
 });
 
-export { signUp, login };
+
+const logout  = asyncErrorHandler(async(req,res)=>{
+       res.clearCookie('jwt');
+       return successResponse(res, null, "Logout successful", 200);     
+})
+
+export { signUp, login, logout };
